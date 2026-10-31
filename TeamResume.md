@@ -2,7 +2,7 @@
 
 ## Team Information
 
-**Team Name:** [TBD]
+**Team Name:** [No Spoilers Allowed]
 
 **Project Name:** [movie-night-api]
 
