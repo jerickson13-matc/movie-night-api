@@ -26,18 +26,25 @@
 - [Relevant work experience]
 - [Other technical experience]
 
-### 2. [Member Name]
-**GitHub:** [@username](https://github.com/username)
+### 2. [Jack Erickson]
+**GitHub:** [@jerickson13-matc](https://github.com/jerickson13-matc)
 
-**Email:** [Optional Email]
+**Email:** [jerickson13@madisoncollege.edu]
 #### Technical Skills
-- replace
-- replace
-- replace
+- Advanced Java
+- Enterprise Java
+- Hibernate
+- MySQL
+- JUnit
+- Maven
+- IntelliJ
+- HTMl
+- CSS
+- JavaScript
 #### Relevant Experience
-- [Previous project or coursework]
-- [Relevant work experience]
-- [Other technical experience]
+- Creating a music lesson finder web application using Java, Jersey, Jackson, Hibernate, Maven and MySQL
+
+- Completed Advanced Java and am currently taking Enterprise Java and Madison College
 
 ### 3. [JaQuan Weaver]
 **GitHub:** [@Jweaver12](https://github.com/username)
