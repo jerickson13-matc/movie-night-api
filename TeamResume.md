@@ -13,18 +13,22 @@
 
 ## Team Members
 
-### 1. [Member Name]
-**GitHub:** [@username](https://github.com/username)
+### 1. [Dawson Soergel]
+**GitHub:** [@dwsoergel](https://github.com/dwsoergel)
 
-**Email:** [Optional Email]
+**Email:** [dsoergel@madisoncollege.edu]
 #### Technical Skills
-- replace
-- replace
-- replace
+- Java, Javascript, HTML, CSS, Python
+- MySQL
+- Hibernate
+- Maven
+- Git & GitHub
+- IntelliJ
+- JUnit
+- RESTful Web Services
 #### Relevant Experience
-- [Previous project or coursework]
-- [Relevant work experience]
-- [Other technical experience]
+- Angler Catch Log & Weather Sync: Currently designing and architecting a full-stack web application utilizing enterprise Java, MySQL databases, Maven dependencies, AWS Cognito authentication, and custom Xweather API integration layers.
+- Advanced Java Analyzer: Built a robust terminal application designed to process files, count tokens efficiently under performance constraints, and record positions within structured data collections using custom TreeMaps.
 
 ### 2. [Jack Erickson]
 **GitHub:** [@jerickson13-matc](https://github.com/jerickson13-matc)
