@@ -2,21 +2,21 @@
 
 ## Team Information
 
-**Team Name:** [No Spoilers Allowed]
+**Team Name:** No Spoilers Allowed
 
-**Project Name:** [movie-night-api]
+**Project Name:** movie-night-api
 
-**Course:** [Enterprise Java]
+**Course:** Enterprise Java
 
-**Semester:** [Fall 2026]
+**Semester:** Fall 2026
 
 
 ## Team Members
 
-### 1. [Dawson Soergel]
+### 1. Dawson Soergel
 **GitHub:** [@dwsoergel](https://github.com/dwsoergel)
 
-**Email:** [dsoergel@madisoncollege.edu]
+**Email:** dsoergel@madisoncollege.edu
 #### Technical Skills
 - Java, Javascript, HTML, CSS, Python
 - MySQL
@@ -30,10 +30,10 @@
 - Angler Catch Log & Weather Sync: Currently designing and architecting a full-stack web application utilizing enterprise Java, MySQL databases, Maven dependencies, AWS Cognito authentication, and custom Xweather API integration layers.
 - Advanced Java Analyzer: Built a robust terminal application designed to process files, count tokens efficiently under performance constraints, and record positions within structured data collections using custom TreeMaps.
 
-### 2. [Jack Erickson]
+### 2. Jack Erickson
 **GitHub:** [@jerickson13-matc](https://github.com/jerickson13-matc)
 
-**Email:** [jerickson13@madisoncollege.edu]
+**Email:** jerickson13@madisoncollege.edu
 #### Technical Skills
 - Advanced Java
 - Enterprise Java
@@ -50,7 +50,7 @@
 
 - Completed Advanced Java and am currently taking Enterprise Java and Madison College
 
-### 3. [JaQuan Weaver]
+### 3. JaQuan Weaver
 **GitHub:** [@Jweaver12](https://github.com/username)
 
 **Email:** jwweaver@madisoncollege.edu
