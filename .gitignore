@@ -38,4 +38,5 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### TODO add database connection and log files
+### TODO add database connection
+/logs
