@@ -1,4 +1,4 @@
-package edu.matc.entity;
+package com.movienight.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
