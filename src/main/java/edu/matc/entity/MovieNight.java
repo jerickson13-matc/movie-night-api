@@ -13,7 +13,7 @@ public class MovieNight {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private int id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -111,7 +111,7 @@ public class MovieNight {
      *
      * @return the id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -120,7 +120,7 @@ public class MovieNight {
      *
      * @param id the id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
