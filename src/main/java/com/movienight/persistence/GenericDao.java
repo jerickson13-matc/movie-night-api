@@ -59,7 +59,7 @@ public class GenericDao<T> {
      * @param id the id
      * @return the by id
      */
-    public T getById(int id) {
+    public T getById(long id) {
         Session session = getSession();
         T entity = session.get(type, id);
         session.close();
@@ -83,13 +83,13 @@ public class GenericDao<T> {
      * Inserts a new entity.
      *
      * @param entity the entity
-     * @return the int
+     * @return the id
      */
-    public int insert(T entity) {
-        int id = 0;
+    public long insert(T entity) {
+        long id = 0;
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
-        id = (int) session.save(entity);
+        id = (long) session.save(entity);
         transaction.commit();
         session.close();
         return id;
