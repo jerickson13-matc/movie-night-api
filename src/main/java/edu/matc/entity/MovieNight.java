@@ -68,6 +68,44 @@ public class MovieNight {
         this.status = status;
     }
 
+    /*
+     * TODO: Uncomment helper methods and collection getters/setters once Movie and Vote are merged
+     *
+     * public void addVote(Vote vote) {
+     *     votes.add(vote);
+     *     vote.setMovieNight(this);
+     * }
+     *
+     * public void removeVote(Vote vote) {
+     *     votes.remove(vote);
+     *     vote.setMovieNight(null);
+     * }
+     *
+     * public void addMovie(Movie movie) {
+     *     movies.add(movie);
+     * }
+     *
+     * public void removeMovie(Movie movie) {
+     *     movies.remove(movie);
+     * }
+     *
+     * public List<Vote> getVotes() {
+     *     return votes;
+     * }
+     *
+     * public void setVotes(List<Vote> votes) {
+     *     this.votes = votes;
+     * }
+     *
+     * public List<Movie> getMovies() {
+     *     return movies;
+     * }
+     *
+     * public void setMovies(List<Movie> movies) {
+     *     this.movies = movies;
+     * }
+     */
+
     /**
      * Gets id.
      *
