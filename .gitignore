@@ -40,3 +40,4 @@ build/
 
 ### TODO add database connection
 /logs
+/src/test/resources/database.properties
