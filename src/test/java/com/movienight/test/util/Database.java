@@ -7,9 +7,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-import com.movienight.util.PropertiesLoader;
-
-import javax.management.RuntimeErrorException;
 
 /**
  * Provides access to the database

@@ -1,4 +1,4 @@
-package com.movienight.util;
+package com.movienight.test.util;
 
 import java.io.*;
 import java.util.*;
