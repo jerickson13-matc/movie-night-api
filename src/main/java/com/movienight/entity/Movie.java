@@ -6,7 +6,7 @@ import jakarta.persistence.*;
  * Represents a movie.
  */
 @Entity(name = "Movie")
-@Table(name = "movies")
+@Table(name = "movie")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
