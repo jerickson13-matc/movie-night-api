@@ -32,12 +32,12 @@ public class MovieNight {
     @Column(name = "status")
     private String status;
 
-    /*
-     * TODO: Uncomment once Movie and Vote entities are merged into main
-     *
-     * @OneToMany(mappedBy = "movieNight", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-     * private List<Vote> votes = new ArrayList<>();
-     */
+    @OneToMany(mappedBy = "movieNight",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private List<Vote> votes = new ArrayList<>();
+
      @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
      @JoinTable(
              name = "movie_night_movies",
@@ -69,27 +69,23 @@ public class MovieNight {
         this.status = status;
     }
 
-    /*
-     * TODO: Uncomment helper methods and collection getters/setters once Vote is merged
-     *
-     * public void addVote(Vote vote) {
-     *     votes.add(vote);
-     *     vote.setMovieNight(this);
-     * }
-     *
-     * public void removeVote(Vote vote) {
-     *     votes.remove(vote);
-     *     vote.setMovieNight(null);
-     * }
-     *
-     * public List<Vote> getVotes() {
-     *     return votes;
-     * }
-     *
-     * public void setVotes(List<Vote> votes) {
-     *     this.votes = votes;
-     * }
-     */
+    public void addVote(Vote vote) {
+        votes.add(vote);
+        vote.setMovieNight(this);
+    }
+
+    public void removeVote(Vote vote) {
+        votes.remove(vote);
+        vote.setMovieNight(null);
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
 
      public void addMovie(Movie movie) {
          movies.add(movie);
