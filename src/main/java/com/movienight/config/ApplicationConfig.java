@@ -1,6 +1,7 @@
 package com.movienight.config;
 
 import com.movienight.service.MovieService;
+import com.movienight.service.VoteService;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -22,7 +23,7 @@ public class ApplicationConfig extends Application{
         Set<Class<?>> classes = new HashSet<>();
         classes.add(MovieService.class);
         // TODO add MovieNightService class like above
-        // TODO add VoteService class like above
+        classes.add(VoteService.class);
         return classes;
     }
 }
