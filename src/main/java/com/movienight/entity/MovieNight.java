@@ -3,6 +3,8 @@ package com.movienight.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type MovieNight.
@@ -35,15 +37,14 @@ public class MovieNight {
      *
      * @OneToMany(mappedBy = "movieNight", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
      * private List<Vote> votes = new ArrayList<>();
-     *
-     * @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-     * @JoinTable(
-     *         name = "movie_night_movies",
-     *         joinColumns = @JoinColumn(name = "movie_night_id"),
-     *         inverseJoinColumns = @JoinColumn(name = "movie_id")
-     * )
-     * private List<Movie> movies = new ArrayList<>();
      */
+     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+     @JoinTable(
+             name = "movie_night_movies",
+             joinColumns = @JoinColumn(name = "movie_night_id"),
+             inverseJoinColumns = @JoinColumn(name = "movie_id")
+     )
+     private List<Movie> movies = new ArrayList<>();
 
     /**
      * Instantiates a new MovieNight.
@@ -69,7 +70,7 @@ public class MovieNight {
     }
 
     /*
-     * TODO: Uncomment helper methods and collection getters/setters once Movie and Vote are merged
+     * TODO: Uncomment helper methods and collection getters/setters once Vote is merged
      *
      * public void addVote(Vote vote) {
      *     votes.add(vote);
@@ -81,14 +82,6 @@ public class MovieNight {
      *     vote.setMovieNight(null);
      * }
      *
-     * public void addMovie(Movie movie) {
-     *     movies.add(movie);
-     * }
-     *
-     * public void removeMovie(Movie movie) {
-     *     movies.remove(movie);
-     * }
-     *
      * public List<Vote> getVotes() {
      *     return votes;
      * }
@@ -96,15 +89,23 @@ public class MovieNight {
      * public void setVotes(List<Vote> votes) {
      *     this.votes = votes;
      * }
-     *
-     * public List<Movie> getMovies() {
-     *     return movies;
-     * }
-     *
-     * public void setMovies(List<Movie> movies) {
-     *     this.movies = movies;
-     * }
      */
+
+     public void addMovie(Movie movie) {
+         movies.add(movie);
+     }
+
+     public void removeMovie(Movie movie) {
+         movies.remove(movie);
+     }
+     public List<Movie> getMovies() {
+         return movies;
+     }
+
+     public void setMovies(List<Movie> movies) {
+         this.movies = movies;
+      }
+
 
     /**
      * Gets id.

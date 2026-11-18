@@ -28,7 +28,6 @@ public class Database implements PropertiesLoader{
      **/
     private Database() {
         loadProperties();
-
     }
 
     /** load the properties file containing the driver, connection url, userid and pwd.
