@@ -1,5 +1,6 @@
 package com.movienight.persistence;
 
+import com.movienight.entity.Movie;
 import com.movienight.entity.MovieNight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class MovieNightDaoTest {
     GenericDao<MovieNight> dao;
+    GenericDao<Movie> movieDao;
     MovieNight newMovieNight;
 
     /**
@@ -25,6 +27,7 @@ public class MovieNightDaoTest {
         Database database = Database.getInstance();
         database.runSQL("cleandb.sql");
         dao = new GenericDao<>(MovieNight.class);
+        movieDao = new GenericDao<>(Movie.class);
 
         newMovieNight = new MovieNight(
                 "Sci-Fi Night",
@@ -127,5 +130,28 @@ public class MovieNightDaoTest {
 
         assertNotNull(insertedMovieNight);
         assertNull(insertedMovieNight.getDescription());
+    }
+
+    /**
+     * Verify that a movie can be nominated and associated with a movie night.
+     */
+    @Test
+    void insertMovieNominationSuccess() {
+        // Create and insert a test movie
+        Movie movie = new Movie("Interstellar", "Sci-Fi", 2014, 169, "A team of explorers travel through a wormhole.");
+        long movieId = movieDao.insert(movie);
+        Movie insertedMovie = movieDao.getById(movieId);
+
+        // Add movie to the movie night collection
+        newMovieNight.addMovie(insertedMovie);
+
+        // Insert the movie night with the association
+        long movieNightId = dao.insert(newMovieNight);
+
+        // Retrieve and verify association
+        MovieNight retrievedMovieNight = dao.getById(movieNightId);
+        assertNotNull(retrievedMovieNight);
+        assertEquals(1, retrievedMovieNight.getMovies().size());
+        assertEquals("Interstellar", retrievedMovieNight.getMovies().iterator().next().getTitle());
     }
 }
