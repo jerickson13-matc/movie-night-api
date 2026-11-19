@@ -2,6 +2,7 @@ package com.movienight.service;
 
 import com.movienight.entity.MovieNight;
 import com.movienight.persistence.GenericDao;
+import com.movienight.entity.Movie;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,6 +19,7 @@ import java.util.Set;
 public class MovieNightService {
     private final GenericDao<MovieNight> dao = new GenericDao<>(MovieNight.class);
     private static final Set<String> VALID_STATUSES = Set.of("OPEN", "CLOSED", "COMPLETED");
+    private final GenericDao<Movie> movieDao = new GenericDao<>(Movie.class);
 
     /**
      * Retrieve all movie nights.
@@ -116,6 +118,71 @@ public class MovieNightService {
     }
 
     /**
+     * Retrieve nominated movies for a movie night.
+     *
+     * @param id the movie night ID
+     * @return HTTP response containing the nominated movies
+     */
+    @GET
+    @Path("/{id}/movies")
+    public Response getNominatedMovies(@PathParam("id") Long id) {
+        MovieNight movieNight = dao.getById(id);
+
+        if (movieNight == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(movieNight.getMovies()).build();
+    }
+
+    /**
+     * Nominate a movie for a movie night.
+     *
+     * @param id the movie night ID
+     * @param movieInput the movie payload (with id or movie details)
+     * @return HTTP response containing the updated movie night or nominated movies
+     */
+    @POST
+    @Path("/{id}/movies")
+    public Response nominateMovie(@PathParam("id") Long id, Movie movieInput) {
+        MovieNight movieNight = dao.getById(id);
+
+        if (movieNight == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        if (movieInput == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        final Movie movieToNominate;
+        if (movieInput.getId() != null && movieInput.getId() > 0) {
+            Movie existingMovie = movieDao.getById(movieInput.getId());
+            if (existingMovie == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            movieToNominate = existingMovie;
+        } else if (movieInput.getTitle() != null && !movieInput.getTitle().isBlank()) {
+            movieToNominate = movieInput;
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        boolean alreadyNominated = movieNight.getMovies().stream()
+                .anyMatch(m -> m.getId() != null && movieToNominate.getId() != null
+                        && m.getId().equals(movieToNominate.getId()));
+
+        if (!alreadyNominated) {
+            movieNight.addMovie(movieToNominate);
+            dao.update(movieNight);
+        }
+
+        return Response.status(Response.Status.CREATED)
+                .entity(dao.getById(id).getMovies())
+                .build();
+    }
+
+    /**
      * Validate required movie night data.
      *
      * @param movieNight the movie night to validate
@@ -129,7 +196,7 @@ public class MovieNightService {
                 && movieNight.getEventDate() != null
                 && movieNight.getHost() != null
                 && !movieNight.getHost().isBlank()
-                && movieNight.getHost().length() <= 255
+                && movieNight.getHost().length() <= 100
                 && (movieNight.getDescription() == null || movieNight.getDescription().length() <= 1000)
                 && movieNight.getStatus() != null
                 && VALID_STATUSES.contains(movieNight.getStatus());
