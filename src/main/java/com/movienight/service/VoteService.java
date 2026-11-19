@@ -26,6 +26,8 @@ public class VoteService {
     private final GenericDao<MovieNight> movieNightDao =
             new GenericDao<>(MovieNight.class);
 
+    private final VoteCalculator voteCalculator = new VoteCalculator();
+
     /**
      * Retrieve all votes for a movie night.
      *
@@ -208,20 +210,12 @@ public class VoteService {
 
         List<Map<String, Object>> results = new ArrayList<>();
 
-        int highestVoteCount = 0;
-        List<Movie> winningMovies = new ArrayList<>();
-
         for (Movie movie : movieNight.getMovies()) {
-            int voteCount = 0;
 
-            for (Vote vote : movieNightVotes) {
-                if (vote.getMovie() != null
-                        && vote.getMovie().getId()
-                        .equals(movie.getId())) {
-
-                    voteCount++;
-                }
-            }
+            int voteCount =
+                    voteCalculator.countVotesForMovie(
+                            movie,
+                            movieNightVotes);
 
             Map<String, Object> movieResult =
                     new LinkedHashMap<>();
@@ -231,16 +225,20 @@ public class VoteService {
             movieResult.put("votes", voteCount);
 
             results.add(movieResult);
+        }
 
-            if (voteCount > highestVoteCount) {
-                highestVoteCount = voteCount;
-                winningMovies.clear();
-                winningMovies.add(movie);
-            } else if (voteCount == highestVoteCount
-                    && voteCount > 0) {
+        List<Movie> winningMovies =
+                voteCalculator.determineWinners(
+                        movieNight.getMovies(),
+                        movieNightVotes);
 
-                winningMovies.add(movie);
-            }
+        int highestVoteCount = 0;
+
+        if (!winningMovies.isEmpty()) {
+            highestVoteCount =
+                    voteCalculator.countVotesForMovie(
+                            winningMovies.get(0),
+                            movieNightVotes);
         }
 
         Map<String, Object> response = new LinkedHashMap<>();
@@ -252,17 +250,28 @@ public class VoteService {
 
         if (movieNightVotes.isEmpty()) {
             response.put("winner", null);
-        } else if (winningMovies.size() == 1) {
-            Map<String, Object> winner = new LinkedHashMap<>();
 
-            winner.put("movieId",
+        } else if (winningMovies.size() == 1) {
+
+            Map<String, Object> winner =
+                    new LinkedHashMap<>();
+
+            winner.put(
+                    "movieId",
                     winningMovies.get(0).getId());
-            winner.put("title",
+
+            winner.put(
+                    "title",
                     winningMovies.get(0).getTitle());
-            winner.put("votes", highestVoteCount);
+
+            winner.put(
+                    "votes",
+                    highestVoteCount);
 
             response.put("winner", winner);
+
         } else {
+
             response.put("winner", null);
             response.put("tie", true);
 
