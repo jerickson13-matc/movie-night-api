@@ -1,5 +1,8 @@
 package com.movienight.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.format.DateTimeFormatter;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDate;
@@ -69,36 +72,78 @@ public class MovieNight {
         this.status = status;
     }
 
+    /**
+     * Add vote.
+     *
+     * @param vote the vote
+     */
     public void addVote(Vote vote) {
         votes.add(vote);
         vote.setMovieNight(this);
     }
 
+    /**
+     * Remove vote.
+     *
+     * @param vote the vote
+     */
     public void removeVote(Vote vote) {
         votes.remove(vote);
         vote.setMovieNight(null);
     }
 
+    /**
+     * Gets votes.
+     *
+     * @return the votes
+     */
+    @JsonIgnore
     public List<Vote> getVotes() {
         return votes;
     }
 
+    /**
+     * Sets votes.
+     *
+     * @param votes the votes
+     */
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 
-     public void addMovie(Movie movie) {
+    /**
+     * Add movie.
+     *
+     * @param movie the movie
+     */
+    public void addMovie(Movie movie) {
          movies.add(movie);
      }
 
-     public void removeMovie(Movie movie) {
+    /**
+     * Remove movie.
+     *
+     * @param movie the movie
+     */
+    public void removeMovie(Movie movie) {
          movies.remove(movie);
      }
-     public List<Movie> getMovies() {
+
+    /**
+     * Gets movies.
+     *
+     * @return the movies
+     */
+    public List<Movie> getMovies() {
          return movies;
      }
 
-     public void setMovies(List<Movie> movies) {
+    /**
+     * Sets movies.
+     *
+     * @param movies the movies
+     */
+    public void setMovies(List<Movie> movies) {
          this.movies = movies;
       }
 
@@ -144,6 +189,7 @@ public class MovieNight {
      *
      * @return the event date
      */
+    @JsonIgnore
     public LocalDate getEventDate() {
         return eventDate;
     }
@@ -153,8 +199,19 @@ public class MovieNight {
      *
      * @param eventDate the event date
      */
+    @JsonIgnore
     public void setEventDate(LocalDate eventDate) {
         this.eventDate = eventDate;
+    }
+
+    /**
+     * Gets event date formatted.
+     *
+     * @return the event date formatted
+     */
+    @JsonProperty("eventDate")
+    public String getEventDateFormatted() {
+        return eventDate == null ? null : eventDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     /**

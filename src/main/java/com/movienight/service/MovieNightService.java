@@ -7,6 +7,8 @@ import com.movienight.entity.Movie;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +22,17 @@ public class MovieNightService {
     private final GenericDao<MovieNight> dao = new GenericDao<>(MovieNight.class);
     private static final Set<String> VALID_STATUSES = Set.of("OPEN", "CLOSED", "COMPLETED");
     private final GenericDao<Movie> movieDao = new GenericDao<>(Movie.class);
+
+    /**
+     * Request payload for creating or updating a movie night.
+     */
+    public static class MovieNightRequest {
+        public String name;
+        public String eventDate;
+        public String host;
+        public String description;
+        public String status;
+    }
 
     /**
      * Retrieve all movie nights.
@@ -52,22 +65,27 @@ public class MovieNightService {
     /**
      * Create a new movie night.
      *
-     * @param movieNight the movie night to create
+     * @param req the movie night requested payload
      * @return HTTP response containing the new movie night
      */
     @POST
-    public Response createMovieNight(MovieNight movieNight) {
+    public Response createMovieNight(MovieNightRequest req) {
+        LocalDate parsedDate = parseDate(req == null ? null : req.eventDate);
+        if (parsedDate == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        MovieNight movieNight = new MovieNight(req.name, parsedDate, req.host, req.description, req.status);
         if (!isValidMovieNight(movieNight)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         movieNight.setId(0L);
-
         long id = dao.insert(movieNight);
-        movieNight.setId(id);
+        MovieNight created = dao.getById(id);
 
         return Response.status(Response.Status.CREATED)
-                .entity(movieNight)
+                .entity(created != null ? created : movieNight)
                 .build();
     }
 
@@ -75,26 +93,38 @@ public class MovieNightService {
      * Update an existing movie night.
      *
      * @param id the movie night ID
-     * @param movieNight the updated movie night
+     * @param req the updated movie night request payload
      * @return HTTP response containing the updated movie night
      */
     @PUT
     @Path("/{id}")
-    public Response updateMovieNight(@PathParam("id") Long id, MovieNight movieNight) {
+    public Response updateMovieNight(@PathParam("id") Long id, MovieNightRequest req) {
         MovieNight existingMovieNight = dao.getById(id);
 
         if (existingMovieNight == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        if (!isValidMovieNight(movieNight)) {
+        LocalDate parsedDate = parseDate(req == null ? null : req.eventDate);
+        if (parsedDate == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        movieNight.setId(id);
-        dao.update(movieNight);
+        MovieNight validationCopy = new MovieNight(req.name, parsedDate, req.host, req.description, req.status);
+        if (!isValidMovieNight(validationCopy)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
-        return Response.ok(movieNight).build();
+        existingMovieNight.setName(req.name);
+        existingMovieNight.setEventDate(parsedDate);
+        existingMovieNight.setHost(req.host);
+        existingMovieNight.setDescription(req.description);
+        existingMovieNight.setStatus(req.status);
+
+        dao.update(existingMovieNight);
+        MovieNight saved = dao.getById(id);
+
+        return Response.ok(saved != null ? saved : existingMovieNight).build();
     }
 
     /**
@@ -163,7 +193,8 @@ public class MovieNightService {
             }
             movieToNominate = existingMovie;
         } else if (movieInput.getTitle() != null && !movieInput.getTitle().isBlank()) {
-            movieToNominate = movieInput;
+            long newMovieId = movieDao.insert(movieInput);
+            movieToNominate = movieDao.getById(newMovieId);
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -180,6 +211,23 @@ public class MovieNightService {
         return Response.status(Response.Status.CREATED)
                 .entity(dao.getById(id).getMovies())
                 .build();
+    }
+
+    /**
+     * Parse an ISO-8601 date string (YYYY-MM-DD) into a LocalDate.
+     *
+     * @param dateStr the date string
+     * @return the parsed LocalDate, or null if blank/invalid
+     */
+    private LocalDate parseDate(String dateStr) {
+        if (dateStr == null || dateStr.isBlank()) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(dateStr.trim());
+        } catch (DateTimeParseException ex) {
+            return null;
+        }
     }
 
     /**
